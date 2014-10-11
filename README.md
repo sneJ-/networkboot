@@ -3,4 +3,8 @@ networkboot
 
 software bundle to distribute live systems over the network
 
-for more information visit http://networkboot.me
+-----------------------------------------------------------
+
+For more information visit <a href="http://networkboot.me">www.networkboot.me</a>
+
+or consult the <a href="https://github.com/sneJ-/networkboot/wiki">Wiki</a>.
