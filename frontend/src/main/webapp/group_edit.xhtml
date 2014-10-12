@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/templates/main.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	<ui:param name="title" value="Group - #{groupBean.group.name}" />
+	<ui:define name="leftBar">
+		<ui:include src="/templates/group_bar.xhtml"></ui:include>
+	</ui:define>
+	<ui:define name="content">
+		<h1>Group: #{groupBean.group.name}</h1>
+		<div id="GroupInformation">
+			<h5>Information</h5>
+			<h:form id="form">
+				<h:panelGrid columns="3">
+					<h:outputLabel value="ID:" for="id" />
+					<h:outputLabel value="#{groupBean.group.id}" id="id" />
+					<h:message style="color:red" for="id" />
+					<h:outputLabel value="Name:" for="name" />
+					<h:inputText value="#{groupBean.group.name}" id="name" maxlength="42"
+						onclick="if (this.value=='New group...'){this.value = ''}" />
+						<h:message style="color:red" for="name" />
+					<h:outputLabel value="Description:" for="description" />
+					<h:inputTextarea value="#{groupBean.group.description}"
+						id="description" maxlength="256" rows="3" cols="28"/>
+						<h:message style="color:red" for="description" />
+				</h:panelGrid>
+				<h:commandButton id="save" value="Save"
+					action="#{groupBean.saveGroup}"
+					rendered="#{groupBean.group.id > 0}">
+				</h:commandButton>
+				<h:commandButton id="delete_host" value="Delete"
+					action="#{groupBean.deleteGroup}" immediate="true"
+					rendered="#{groupBean.group.id > 0}">
+				</h:commandButton>
+				<h:commandButton id="create" value="Create"
+					action="#{groupBean.createGroup}"
+					rendered="#{groupBean.group.id == 0}">
+				</h:commandButton>
+				<h:commandButton id="wol" value="Wake on LAN" action="#{groupBean.wol}" rendered="#{groupBean.group.id > 0}" />
+				<h:outputText value="#{groupBean.errorMsg}" rendered="#{groupBean.errorMsg != ''}" style="color:red"/>
+			</h:form>
+		</div>
+		<div id="hosts">
+			<h5>Hosts</h5>
+			<h:form id="hostlist">
+				<h:selectManyCheckbox value="#{groupBean.selectedHosts}"
+					id="assignedGroups" layout="pageDirection">
+					<f:selectItems value="#{groupBean.hosts}" var="var"
+						itemLabel="#{var.name}" itemValue="#{var.id}" />
+				</h:selectManyCheckbox>
+				<h:commandButton id="add_groups" value="Add" action="/group_host_add.xhtml"
+					rendered="#{groupBean.group.id > 0}">
+					<f:param name="groupID" value="#{groupBean.group.id}" />
+				</h:commandButton>
+				<h:commandButton id="delete_groups" value="Delete"
+					action="#{groupBean.deleteHosts}"
+					rendered="#{groupBean.group.id > 0}">
+				</h:commandButton>
+			</h:form>
+		</div>
+		<div id="images">
+			<h:form id="imagelist">
+				<h:dataTable value="#{groupBean.images}" var="image"
+					styleClass="imageTable" headerClass="imageTableHeader"
+					rowClasses="imageTableOddRow,imageTableEvenRow">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="image" />
+						</f:facet>
+						<ui:fragment rendered="#{image.timed}">
+							<input type="radio" name="selectedImage"
+								id="#{'selectedImage:'.concat(image.id).concat(',').concat(image.time.id)}"
+								value="#{image.id.concat(',').concat(image.time.id)}" />
+							<label
+								for="#{'selectedImage:'.concat(image.id).concat(',').concat(image.time.id)}">#{image.name}</label>
+						</ui:fragment>
+						<ui:fragment rendered="#{not image.timed}">
+							<input type="radio" name="selectedImage"
+								id="#{'selectedImage:'.concat(image.id).concat(',0')}"
+								value="#{image.id.concat(',0')}" />
+							<label for="#{'selectedImage:'.concat(image.id).concat(',0')}">#{image.name}</label>
+						</ui:fragment>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="date" />
+						</f:facet>
+						<h:outputText value="always" rendered="#{not image.timed}" />
+						<h:outputText value="#{image.time.tableOutputDays}"
+							rendered="#{image.timed}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="time" />
+						</f:facet>
+						<h:outputText value="#{image.time.tableOutputTime}"
+							rendered="#{image.timed}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="priority" />
+						</f:facet>
+						<h:outputText value="#{image.priority}" />
+					</h:column>
+				</h:dataTable>
+				<h:commandButton id="add_images" value="Add"
+					action="/group_image_edit.xhtml"
+					rendered="#{groupBean.group.id > 0 and imageBean.imagelist.size() > 0}">
+					<f:param name="groupID" value="#{groupBean.group.id}" />
+				</h:commandButton>
+				<h:commandButton id="edit_images" value="Edit"
+					action="#{groupBean.groupImageEditFormular}"
+					rendered="#{groupBean.group.id > 0 and groupBean.images.size() > 0}">
+					<f:param name="groupID" value="#{groupBean.group.id}" />
+				</h:commandButton>
+				<h:commandButton id="delte_images" value="Delete"
+					action="#{groupBean.deleteImageTime}"
+					rendered="#{groupBean.group.id > 0 and groupBean.images.size() > 0}">
+				</h:commandButton>
+			</h:form>
+		</div>
+	</ui:define>
+	<ui:define name="footer">
+		<a href="http://www.netbootd.org">Netbootd </a> is published under GPL.
+</ui:define>
+</ui:composition>

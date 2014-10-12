@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+	<h1>Netbootd</h1>
+	<div id="mainStatistics">
+		<h5> Statistics </h5>
+	<h:panelGrid columns="2">
+		<h:outputText value="Number of hosts:"/>
+		<h:outputText value="#{hostBean.hostlist.size()}" />
+		<h:outputText value="Number of groups:"/>
+		<h:outputText value="#{groupBean.grouplist.size()}"/>
+		<h:outputText value="Number of images:" />
+		<h:outputText value="#{imageBean.imagelist.size()}"/>
+		<h:outputText value="Number of storages:" />
+		<h:outputText value="#{storageBean.storagelist.size()}"/>
+	</h:panelGrid>
+	</div>
+	<div id="mainStorageTypes">
+		<h5> Available storage types </h5>
+		<h:dataTable value="#{storageBean.availableStorages}" var="storages">
+			<h:column>
+				<h:outputText value="#{storages}" />
+			</h:column>
+		</h:dataTable>
+	</div>
+</ui:composition>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/templates/main.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	<ui:param name="title" value="Storage - #{storageBean.storage.name}" />
+	<ui:define name="leftBar">
+		<ui:include src="/templates/storage_bar.xhtml"></ui:include>
+	</ui:define>
+	<ui:define name="content">
+		<h1>Storage: #{storageBean.storage.name}</h1>
+		<div id="StorageInformation">
+			<h5>Information</h5>
+			<h:form id="form">
+				<h:panelGrid columns="3">
+					<h:outputLabel value="ID:" for="id" />
+					<h:outputLabel value="#{storageBean.storage.id}" id="id" />
+					<h:message style="color: red" for="id" />
+					<h:outputLabel value="Name:" for="name" />
+					<h:inputText value="#{storageBean.storage.name}" id="name"
+						maxlength="42"
+						onclick="if (this.value=='New storage...'){this.value = ''}" />
+					<h:message style="color: red" for="name" />
+					<h:outputLabel value="Type:" for="type" />
+					<h:selectOneMenu id="type" value="#{storageBean.storage.type}" rendered="#{storageBean.storage.id == 0}">
+						<f:selectItem itemLabel="AoE Server" itemValue="AoE" />
+						<f:selectItem itemLabel="FCoE Server" itemValue="FCoE" />
+						<f:selectItem itemLabel="FTP Server" itemValue="FTP" />
+						<f:selectItem itemLabel="HTTP Server" itemValue="HTTP" />
+						<f:selectItem itemLabel="HTTPs Server" itemValue="HTTPS" />
+						<f:selectItem itemLabel="iSCSI Server" itemValue="iSCSI" />
+						<f:selectItem itemLabel="Netbootd database" itemValue="db"/>
+						<f:selectItem itemLabel="NFS Server" itemValue="NFS" />
+						<f:selectItem itemLabel="TFTP Server" itemValue="TFTP" />
+						<f:selectItem itemLabel="Windows SMB" itemValue="SMB" />
+					</h:selectOneMenu>
+					<h:outputText value="#{storageBean.storage.type}" rendered="#{storageBean.storage.id > 0}"/>
+					<h:message style="color: red" for="type" />
+					<h:outputLabel value="Base URL:" for="baseURL" />
+					<h:inputText id="baseURL"
+						value="#{storageBean.storage.baseURL}" maxlength="256" size="32" />
+					<h:message style="color: red" for="baseURL" />
+					<h:outputLabel value="Directory:" for="directory" />
+					<h:inputText id="directory"
+						value="#{storageBean.storage.directory}" maxlength="128" rendered="#{storageBean.storage.id == 0}"/>
+					<h:outputText value="#{storageBean.storage.directory}" rendered="#{storageBean.storage.id > 0}" />
+					<h:message style="color: red" for="directory" />
+				</h:panelGrid>
+				<h:commandButton id="save" value="Save"
+					action="#{storageBean.saveStorage}"
+					rendered="#{storageBean.storage.id > 0}">
+				</h:commandButton>
+				<h:commandButton id="delete_storage" value="Delete"
+					action="#{storageBean.deleteStorage}" immediate="true"
+					rendered="#{storageBean.storage.id > 0}">
+				</h:commandButton>
+				<h:commandButton id="create" value="Create"
+					action="#{storageBean.createStorage}"
+					rendered="#{storageBean.storage.id == 0}">
+				</h:commandButton>
+				<h:outputText value="#{storageBean.errorMsg}" rendered="#{storageBean.errorMsg != ''}" style="color:red" />
+			</h:form>
+		</div>
+		<div id="ImagesOnStorage">
+			<h5>Images on storage</h5>
+			<h:form id="imagelist">
+				<h:dataTable value="#{storageBean.imagesOnStorage}" var="image"
+					styleClass="imageTable" headerClass="imageTableHeader"
+					rowClasses="imageTableOddRow,imageTableEvenRow"
+					columnClasses="imageTableColumnName,imageTableColumnDescription">
+					<h:column>
+						<ui:fragment>
+							<input type="radio" name="imageID" id="#{'image:'.concat(image.id)}"
+								value="#{image.id}" />
+							<label for="#{'image:'.concat(image.id)}">#{image.name}</label>
+						</ui:fragment>
+					</h:column>
+					<h:column>
+						<ui:fragment>
+							<label for="#{'image:'.concat(image.id)}">#{image.description.split('\\r?\\n', 2)[0]}</label>
+						</ui:fragment>
+					</h:column>
+				</h:dataTable>
+				<h:commandButton id="edit" value="Edit"
+					action="#{storageBean.imageEdit}" immediate="true"
+					rendered="#{storageBean.storage.id > 0}">
+				</h:commandButton>
+				<h:commandButton id="delete" value="Delete" immediate="true"
+					action="#{storageBean.deleteImage}"
+					rendered="#{storageBean.storage.id > 0}">
+				</h:commandButton>
+				<h:outputText value="#{storageBean.errorMsg2}" rendered="#{storageBean.errorMsg2 != ''}" style="color:red" />
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

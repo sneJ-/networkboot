@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<head>
+<title>Preferences</title>
+<link rel="stylesheet" type="text/css" href="styles/design.css" />
+</head>
+<body>
+	<div id="header">
+		<ui:include src="/templates/header.xhtml"></ui:include>
+	</div>
+	<div id="preferences">
+		<h1>Netbootd</h1>
+		<div id="configuration">
+			<h5>Configuration</h5>
+			<h:panelGrid columns="2" styleClass="imageTable"
+				headerClass="imageTableHeader"
+				rowClasses="imageTableOddRow,imageTableEvenRow"
+				columnClasses="imageTableColumnName,imageTableColumnDescription">
+				<h:outputText value="config file: " />
+				<h:outputText value="#{preferencesBean.configFile}" />
+				<h:outputText value="database file: " />
+				<h:outputText value="#{preferencesBean.databaseFile}" />
+				<h:outputText value="authentication file: " />
+				<h:outputText value="#{preferencesBean.authenticationFile}" />
+				<h:outputText value="temp. storage: " />
+				<h:outputText value="#{preferencesBean.tempStorage}" />
+				<h:outputText value="free memory on temp: " />
+				<h:outputText value="#{preferencesBean.freeTempMemory}" />
+				<h:outputText value="storage dir: " />
+				<h:outputText value="#{preferencesBean.storageDir}" />
+				<h:outputText value="TFTP directory: " />
+				<h:outputText value="#{preferencesBean.TFTPDir}" />
+				<h:outputText value="HTTP Image directory: " />
+				<h:outputText value="#{preferencesBean.HTTPImageDir}" />
+				<h:outputText value="Maximum upload file size: "/>
+				<h:outputText value="#{preferencesBean.maxUploadSize} MiB"/>
+				<h:outputText value="HTTPs: " />
+				<h:outputText value="#{preferencesBean.HTTPs}" />
+				<h:outputText value="certificate storage: " />
+				<h:outputText value="#{preferencesBean.certificateStorage}" />
+				<h:outputText value="dynamic host adding: " />
+				<h:outputText value="#{preferencesBean.addingEnabled}" />
+			</h:panelGrid>
+			<br />
+			<h:form>
+				<h:commandButton id="clearTemp" value="Clear Temp." action="#{preferencesBean.clearTemp}"/>
+			</h:form>
+		</div>
+		<div id="status">
+			<h5>Status</h5>
+			<h:panelGrid columns="2" styleClass="imageTable"
+				headerClass="imageTableHeader"
+				rowClasses="imageTableOddRow,imageTableEvenRow"
+				columnClasses="imageTableColumnName,imageTableColumnDescription">
+				<h:outputText value="Backend Daemon: " />
+				<h:outputText value="#{preferencesBean.backendDaemon}" />
+				<h:outputText value="DHCP Daemon: " />
+				<h:outputText value="#{preferencesBean.DHCPDaemon}" />
+				<h:outputText value="TFTP Daemon: " />
+				<h:outputText value="#{preferencesBean.TFTPDaemon}" />
+				<h:outputText value="HTTP Image Daemon: " />
+				<h:outputText value="#{preferencesBean.HTTPImageDaemon}" />
+			</h:panelGrid>
+		</div>
+		<div id="info">
+			<h5>Info</h5>
+			<h:panelGrid columns="2" styleClass="imageTable"
+				headerClass="imageTableHeader"
+				rowClasses="imageTableOddRow,imageTableEvenRow"
+				columnClasses="imageTableColumnName,imageTableColumnDescription">
+				<h:outputText value="Frontend Version: " />
+				<h:outputText value="#{preferencesBean.frontendVersion}" />
+				<h:outputText value="build date: " />
+				<h:outputText value="#{preferencesBean.frontendBuildDate}" />
+				<ui:fragment>
+					<br />
+				</ui:fragment>
+				<h:outputText />
+				<h:outputText value="Backend Version: " />
+				<h:outputText value="#{preferencesBean.backendVersion}" />
+				<h:outputText value="build date: " />
+				<h:outputText value="#{preferencesBean.backendBuildDate}" />
+				<ui:fragment>
+					<br />
+				</ui:fragment>
+				<h:outputText />
+				<h:outputText value="iPXE Version: " />
+				<h:outputText value="#{preferencesBean.iPXEVersion}" />
+				<h:outputText value="build date: " />
+				<h:outputText value="#{preferencesBean.iPXEBuildDate}" />
+			</h:panelGrid>
+		</div>
+		<div id="team">
+			<h5>Team</h5>
+			<h:dataTable value="#{preferencesBean.team}" var="team"
+				styleClass="imageTable" headerClass="imageTableHeader"
+				rowClasses="imageTableOddRow,imageTableEvenRow"
+				columnClasses="imageTableColumnName,imageTableColumnDescription">
+				<h:column>
+					<h:outputLink value="#{team.mail}">#{team.name}</h:outputLink>
+				</h:column>
+				<h:column>
+					<h:outputText value="#{team.function}" />
+				</h:column>
+			</h:dataTable>
+		</div>
+	</div>
+	<div id="footer">
+		<a href="http://www.networkboot.me">Netbootd </a> is published under
+		GPL.
+	</div>
+</body>
+</html>

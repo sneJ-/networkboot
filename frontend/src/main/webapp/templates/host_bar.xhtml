@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+	<h:form id="searchbar">
+		<h:panelGrid border="0" columns="2"
+				columnClasses="searchBarColumnBar,searchBarColumnButton">
+			<h:inputText id="host_searchbar"
+				p:placeholder="Filter hosts by name..." class="search" ></h:inputText>
+			<h:commandLink action="/host_edit.xhtml"> ADD </h:commandLink>
+		</h:panelGrid>
+	</h:form>
+	<h:form id="hostlist">
+		<table width="100%">
+			<tbody class="list">
+				<ui:repeat var="host" value="#{hostBean.hostlist}">
+					<tr>
+						<td class="hostlistColumnHosts"><a
+							href="host_edit.xhtml?hostID=#{host.id}" class="hostname">#{host.name}</a></td>
+						<td class="hostlistColumnValidated">
+						<h:graphicImage value="resources/images/validated.png" alt="true" rendered="#{host.validated}" />
+						<h:graphicImage value="resources/images/not-validated.png" alt="false" rendered="#{not host.validated}"/></td>
+					</tr>
+				</ui:repeat>
+			</tbody>
+		</table>
+	</h:form>
+	<!-- Search algorithm implementation-->
+	<script src="resources/js/list.js"></script>
+	<script type="text/javascript">
+		var options = {
+			valueNames : [ 'hostname' ]
+		};
+		var hostlist = new List('leftBar', options);
+	</script>
+</ui:composition>

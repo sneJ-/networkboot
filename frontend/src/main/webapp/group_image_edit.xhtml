@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/templates/main.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html">
+	<ui:param name="title" value="Group - #{groupBean.group.name}" />
+	<ui:define name="leftBar">
+		<ui:include src="/templates/group_bar.xhtml"></ui:include>
+	</ui:define>
+	<ui:define name="content">
+		<h1>Host: #{groupBean.group.name}</h1>
+		<div id="hostImageEdit">
+			<h:form id="form">
+				<h5>Image mapping</h5>
+				<h:panelGrid columns="2">
+					<h:outputText value="id: " />
+					<h:outputText value="#{groupBean.imageMapping.id}" />
+					<h:outputText value="name: " />
+					<h:selectOneMenu id="weekday" value="#{groupBean.imageMapping.image.id}" immediate="true" valueChangeListener="#{groupBean.imageListChanged}" onchange="submit()">
+						<f:selectItems value="#{groupBean.imageList}" var="image" itemLabel="#{image.name}" itemValue="#{image.id}"/>
+					</h:selectOneMenu>
+					<h:outputText value="description: " />
+					<h:outputText value="#{groupBean.imageMapping.image.description.split('\\r?\\n', 2)[0]}" />
+					<h:outputLabel for="priority" value="priority: " />
+					<h:panelGroup>
+						<h:inputText id="priority"
+							value="#{groupBean.imageMapping.priority}" size="3" maxlength="4" />
+						<h:message style="color:red" for="priority" />
+					</h:panelGroup>
+					<h:outputLabel for="parameter" value="parameter: " />
+					<h:inputTextarea id="parameter" maxlength="512" rows="1"
+						value="#{groupBean.imageMapping.bootParameter}" />
+				</h:panelGrid>
+				<h:commandButton id="save" value="Save"
+					action="#{groupBean.groupImageEditSave}"
+					rendered="#{groupBean.group.id > 0 and groupBean.imageMapping.id > 0}">
+					<f:param value="#{groupBean.group.id}" name="groupID" />
+				</h:commandButton>
+				<h:commandButton id="delete" value="Delete" immediate="true"
+					action="#{groupBean.groupImageEditDelete}"
+					rendered="#{groupBean.group.id > 0 and groupBean.imageMapping.id > 0}">
+					<f:param value="#{groupBean.group.id}" name="groupID" />
+				</h:commandButton>
+				<h:commandButton id="create" value="Create" immediate="false"
+					action="#{groupBean.groupImageEditCreate}" rendered="#{groupBean.group.id > 0 and groupBean.imageMapping.id == 0}">
+					<f:param value="#{groupBean.group.id}" name="groupID" />
+				</h:commandButton>
+				<h:commandButton id="cancel" value="Cancel" immediate="true"
+					action="/group_edit.xhtml">
+					<f:param value="#{groupBean.group.id}" name="groupID" />
+				</h:commandButton>
+			</h:form>
+		</div>
+		<div id="hostImageEditTime">
+			<h:form id="timeConstraints">
+				<h5>Time constraints</h5>
+				<h:outputText value="always"
+					rendered="#{not groupBean.imageMapping.timed}" />
+				<h:dataTable value="#{groupBean.imageMapping.times}" var="time"
+					styleClass="imageTable" headerClass="imageTableHeader"
+					rowClasses="imageTableOddRow,imageTableEvenRow"
+					rendered="#{groupBean.imageMapping.timed}">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="date" />
+						</f:facet>
+						<ui:fragment>
+							<input type="radio" name="selectedTimeConstraint"
+								id="#{groupBean.imageMapping.times.indexOf(time)}"
+								value="#{groupBean.imageMapping.times.indexOf(time)}" />
+							<label for="#{groupBean.imageMapping.times.indexOf(time)}">#{time.tableOutputDays}</label>
+						</ui:fragment>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="time" />
+						</f:facet>
+						<h:outputText value="#{time.tableOutputTime}" />
+					</h:column>
+				</h:dataTable>
+				<h:commandButton id="deleteTime" value="Delete" immediate="true"
+					action="#{groupBean.deleteTimeConstraint}"
+					rendered="#{groupBean.imageMapping.timed}">
+				</h:commandButton>
+			</h:form>
+		</div>
+		<div id="hostImageEditTimeBottom">
+			<h:form id="addTimeConstraint">
+				<h5>Add time constraint</h5>
+				<h:panelGrid columns="2">
+					<h:outputLabel value="begin: " for="beginMinute" />
+					<h:panelGroup>
+						<h:inputText id="beginHour" size="1" maxlength="2"
+							value="#{groupBean.tc.beginHour}"
+							onkeyup="if(this.value.length >= this.getAttribute('maxlength')) {document.getElementById('addTimeConstraint:beginMinute').focus();}" />
+						<h:message style="color:red" for="beginHour" />
+						<h:outputText value=":" />
+						<h:inputText id="beginMinute" size="1" maxlength="2"
+							value="#{groupBean.tc.beginMinute}"
+							onkeyup="if(this.value.length >= this.getAttribute('maxlength')) {document.getElementById('addTimeConstraint:endHour').focus();}" />
+						<h:message style="color:red" for="beginMinute" />
+					</h:panelGroup>
+					<h:outputLabel value="end: " for="endMinute" />
+					<h:panelGroup>
+						<h:inputText id="endHour" size="1" maxlength="2"
+							value="#{groupBean.tc.endHour}"
+							onkeyup="if(this.value.length >= this.getAttribute('maxlength')) {document.getElementById('addTimeConstraint:endMinute').focus();}" />
+							<h:message style="color:red" for="endHour" />
+						<h:outputText value=":" />
+						<h:inputText id="endMinute" size="1" maxlength="2"
+							value="#{groupBean.tc.endMinute}" />
+						<h:message style="color:red" for="endMinute" />
+					</h:panelGroup>
+					<h:outputLabel value="day of week:" for="weekday" />
+					<h:selectOneMenu id="weekday" value="#{groupBean.tc.dow}">
+						<f:selectItem itemLabel="Every" />
+						<f:selectItem itemLabel="Mondays" itemValue="1" />
+						<f:selectItem itemLabel="Tuesdays" itemValue="2" />
+						<f:selectItem itemLabel="Wednesdays" itemValue="3" />
+						<f:selectItem itemLabel="Thursdays" itemValue="4" />
+						<f:selectItem itemLabel="Fridays" itemValue="5" />
+						<f:selectItem itemLabel="Saturdays" itemValue="6" />
+						<f:selectItem itemLabel="Sundays" itemValue="0" />
+					</h:selectOneMenu>
+					<h:outputLabel value="day of month:" for="dom" />
+					<h:panelGroup>
+						<h:inputText id="dom" size="1" maxlength="2"
+							value="#{groupBean.tc.dom}" />
+						<h:message style="color:red" for="dom" />
+					</h:panelGroup>
+					<h:outputLabel value="month:" for="month" />
+					<h:selectOneMenu id="month" value="#{groupBean.tc.month}">
+						<f:selectItem itemLabel="Every" />
+						<f:selectItem itemLabel="January" itemValue="1" />
+						<f:selectItem itemLabel="February" itemValue="2" />
+						<f:selectItem itemLabel="March" itemValue="3" />
+						<f:selectItem itemLabel="April" itemValue="4" />
+						<f:selectItem itemLabel="May" itemValue="5" />
+						<f:selectItem itemLabel="June" itemValue="6" />
+						<f:selectItem itemLabel="July" itemValue="7" />
+						<f:selectItem itemLabel="August" itemValue="8" />
+						<f:selectItem itemLabel="September" itemValue="9" />
+						<f:selectItem itemLabel="October" itemValue="10" />
+						<f:selectItem itemLabel="November" itemValue="11" />
+						<f:selectItem itemLabel="December" itemValue="12" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				<h:commandButton id="AddTime" value="Add"
+					action="#{groupBean.addTimeConstraint}"
+					rendered="#{groupBean.group.id > 0}">
+				</h:commandButton>
+				<h:messages style="color:red" globalOnly="true" />
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
