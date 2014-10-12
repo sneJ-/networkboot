@@ -1,7 +1,7 @@
 networkboot
 ===========
 
-software bundle to distribute live systems over the network
+open source network boot bundle to boot up hosts via PXE
 
 -----------------------------------------------------------
 
