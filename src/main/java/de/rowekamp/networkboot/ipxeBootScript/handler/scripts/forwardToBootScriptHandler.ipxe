@@ -1,0 +1,16 @@
+#!ipxe
+
+console --picture $0$/background.png --left 32 --right 32 --top 32 --bottom 48
+
+menu Logins aren't allowed from this host.
+
+item --gap Please contact your administrator.
+item shutdown Shutdown
+
+choose --default bootScriptHandler --timeout 5000 target && goto ${target}
+
+:bootScriptHandler
+chain $0$/boot?mac=${net0/mac}
+
+:shutdown
+poweroff

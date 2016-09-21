@@ -1,0 +1,20 @@
+#!ipxe
+
+console --picture $0$/background.png --left 32 --right 32 --top 32 --bottom 48
+
+set username 
+set password
+
+login || goto cancelled
+
+params --name login
+param --params login username ${username:uristring}
+param --params login password ${password:uristring}
+
+chain $0$/auth?mac=${net0/mac}##params=login
+
+:cancelled
+echo Login cancelled.
+echo Shutting down host.
+sleep 10
+poweroff

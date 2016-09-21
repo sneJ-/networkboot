@@ -1,0 +1,18 @@
+#!ipxe
+
+console --picture $0$/background.png --left 32 --right 32 --top 32 --bottom 48
+
+menu Login Failed
+
+item --gap  
+item --gap $1$
+item --gap $2$
+item --gap
+item --gap $3$
+item --gap
+item tryAgain tryAgain
+
+choose --default tryAgain --timeout 10000 target && goto ${target}
+
+:tryAgain
+chain $0$/boot?mac=${net0/mac}

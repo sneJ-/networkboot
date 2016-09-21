@@ -1,0 +1,17 @@
+#!ipxe
+
+console --picture $1$/background.png --left 32 --right 32 --top 32 --bottom 48
+
+menu Error
+
+item --gap Ooops an error occurred. 
+item --gap Please contact your administrator for advice.
+item --gap
+item --gap Error-Message: $0$
+item --gap
+item shutdown Shutdown
+
+choose --default shutdown --timeout 30000 target && goto ${target}
+
+:shutdown
+poweroff

@@ -1,0 +1,16 @@
+#!ipxe
+
+console --picture $0$/background.png --left 32 --right 32 --top 32 --bottom 48
+
+menu Host has not been validated yet.
+
+item --gap Please validate the host via the frontend.
+item shutdown Shutdown
+item --gap
+item --gap MAC: ${net0/mac}
+
+
+choose --default shutdown --timeout 30000 target && goto ${target}
+
+:shutdown
+poweroff

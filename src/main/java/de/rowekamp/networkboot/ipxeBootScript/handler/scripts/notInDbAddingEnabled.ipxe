@@ -1,0 +1,23 @@
+#!ipxe
+
+console --picture $0$/background.png --left 32 --right 32 --top 32 --bottom 48
+
+menu Host has not been added yet.
+
+item --gap Please add the host to your database.
+item add Add now
+item shutdown Shutdown
+item --gap
+item --gap MAC: ${net0/mac}
+item --gap Product: ${product:uristring}
+item --gap UUID: ${uuid}
+item --gap Serial: ${serial}
+item --gap Asset: ${asset:uristring}
+
+choose --default shutdown --timeout 30000 target && goto ${target}
+
+:shutdown
+poweroff
+
+:add
+chain $0$/add?mac=${net0/mac}

@@ -1,0 +1,10 @@
+#!ipxe
+
+console --picture $0$/background.png --left 32 --right 32 --top 32 --bottom 48
+
+echo Please enter the hostname for the database.
+echo
+set hostname ${product:uristring}
+echo -n Hostname: ${} && read hostname
+
+chain $0$/add?mac=${net0/mac}&hostname=${hostname}

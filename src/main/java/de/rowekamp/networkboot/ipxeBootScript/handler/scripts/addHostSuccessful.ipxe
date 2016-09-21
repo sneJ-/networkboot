@@ -1,0 +1,21 @@
+#!ipxe
+
+console --picture $0$/background.png --left 32 --right 32 --top 32 --bottom 48
+
+menu Host has been added to the database.
+
+item --gap Please validate the host via the frontend.
+item --gap
+item back Back
+item shutdown Shutdown
+item --gap
+item --gap MAC: ${net0/mac}
+item --gap Name: $1$
+
+choose --default shutdown --timeout 30000 target && goto ${target}
+
+:shutdown
+poweroff
+
+:back
+chain $0$/boot?mac=${net0/mac}

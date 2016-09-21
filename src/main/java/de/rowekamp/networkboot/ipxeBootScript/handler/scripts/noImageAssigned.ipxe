@@ -1,0 +1,15 @@
+#!ipxe
+
+console --picture $0$/background.png --left 32 --right 32 --top 32 --bottom 48
+
+menu No image assigned
+
+item --gap Currently there is no image assigned to your host. 
+item --gap Please contact your administrator for advice.
+item --gap
+item shutdown Shutdown
+
+choose --default shutdown --timeout 30000 target && goto ${target}
+
+:shutdown
+poweroff

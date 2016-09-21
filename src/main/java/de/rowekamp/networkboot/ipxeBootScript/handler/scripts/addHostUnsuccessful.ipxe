@@ -1,0 +1,11 @@
+#!ipxe
+
+console --picture $0$/background.png --left 32 --right 32 --top 32 --bottom 48
+
+echo Error: Host couldn't be added to the database.
+echo Hostname already in use. Choose another one.
+echo
+set hostname $1$
+echo -n Hostname: ${} && read hostname
+
+chain $0$/add?mac=${net0/mac}&hostname=${hostname}
