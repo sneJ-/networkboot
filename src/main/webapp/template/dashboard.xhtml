@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:f="http://xmlns.jcp.org/jsf/core"
+	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:b="http://bootsfaces.net/ui">
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="/javax.faces.resource/img/favicon.ico"/>
+	<h:outputStylesheet name="css/dashboard.css" />
+	<h:outputStylesheet name="css/font-awesome.min.css" />
+	<meta name="author" content="Jens Röwekamp"></meta>
+	<title>networkboot</title>
+</h:head>
+<h:body>
+	<nav id="header">
+		<ui:include src="header.xhtml"></ui:include>
+	</nav>
+	<b:container fluid="true">
+		<b:row>
+			<b:column col-sm="3" col-md="2" styleClass="sidebar">
+				<ui:insert name="leftBar">Default - left side bar</ui:insert>
+			</b:column>
+			<b:column col-sm="9" offset-sm="3" col-md="10" offset="2"
+				styleClass="main">
+				<ui:insert name="content"><h1>Main Content</h1></ui:insert>
+			</b:column>
+		</b:row>
+	</b:container>
+	<footer id="footer">
+		<ui:include src="footer.xhtml"></ui:include>
+	</footer>
+</h:body>
+</html>

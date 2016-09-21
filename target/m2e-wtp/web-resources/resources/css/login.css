@@ -1,0 +1,25 @@
+body{
+	padding-top: 5%;
+	background: white url(../img/ipxe.png) no-repeat center 55% fixed;
+}
+
+.form-signin {
+	margin: 0 auto;
+	max-width: 330px;
+	padding: 15px;
+}
+
+.form-signin-heading{
+	
+}
+
+
+/** Mobile Devices **/
+@media (max-width: 600px) {
+
+	body {
+		padding-top: 4%;
+		background: white url(../img/ipxe-small.png) no-repeat center 75% fixed;
+	}
+	
+}

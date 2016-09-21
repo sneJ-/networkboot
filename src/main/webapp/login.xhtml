@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:f="http://xmlns.jcp.org/jsf/core"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:b="http://bootsfaces.net/ui">
+<h:head>
+<link rel="shortcut icon" type="image/x-icon" href="/javax.faces.resource/img/favicon.ico"/>
+<h:outputStylesheet name="css/login.css" />
+<h:outputStylesheet name="css/font-awesome.min.css"/>
+<title>networkboot - login</title>
+</h:head>
+<h:body>
+<b:container>
+	<h:form styleClass="form-signin" prependId="false">
+		<h2 class="form-signin-heading">Please sign in</h2>
+		<b:inputText id="username" placeholder="Username" value="#{loginBean.username}" >
+        	<f:facet name="prepend">
+            	<b:icon name="user" />
+            </f:facet>
+        </b:inputText>
+        <b:inputSecret id="passowrd" placeholder="Password" value="#{loginBean.password}">
+        	<f:facet name="prepend">
+            	<b:iconAwesome name="key" />
+            </f:facet>
+        </b:inputSecret>
+        <b:commandButton id="submitButton" binding="#{loginBean.submitButton}" look="primary btn-block" value="Sign In" icon="log-in" size="lg" action="#{loginBean.login}"/>
+        <b:messages errorClass="err" warnClass="warn" infoClass="info" for="submitButton"/>
+	</h:form>
+</b:container>
+</h:body>
+</html>
