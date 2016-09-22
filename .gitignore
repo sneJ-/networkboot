@@ -50,3 +50,7 @@ target/m2e-wtp/web-resources/META-INF
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Own changes
+# =========================
+/target/
